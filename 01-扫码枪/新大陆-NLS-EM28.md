@@ -1,0 +1,295 @@
+# 扫码枪 - 新大陆 NLS-EM28
+
+## 文档版本
+
+| 版本 | 日期 | 修改内容 |
+|------|------|----------|
+| V1.0 | 2026-06-16 | 初始版本，从原始文档拆分 |
+| V1.1 | 2026-06-17 | 优化调用流程图，补充异常处理路径 |
+
+## 设备信息
+
+| 项目 | 内容 |
+|------|------|
+| 设备类型 | 扫码枪 |
+| 品牌 | 新大陆 |
+| 型号 | NLS-EM28 |
+| DIS 接口前缀 | DEV_QrScan |
+
+## 调用流程
+
+```mermaid
+flowchart TD
+    START([开始]) --> OPEN[Open 打开扫码设备]
+    OPEN -->|code=0 初始化成功| SCAN[Scan 开始扫码]
+    OPEN -->|code≠0 初始化失败| ERR1[检查设备连接/重试]
+    SCAN -->|code=0 扫码成功| RESULT[获取 barcodeData 扫码结果]
+    SCAN -->|13003002 超时| TIMEOUT[超时未扫到码]
+    SCAN -->|99999901 主动取消| STOP[Stop 停止扫码]
+    RESULT --> STOP
+    TIMEOUT --> RETRY{是否重试?}
+    RETRY -->|是| SCAN
+    RETRY -->|否| STOP
+    STOP --> CLOSE[Close 关闭设备]
+    ERR1 --> CLOSE
+    CLOSE --> END([结束])
+
+    classDef success fill:#d4edda,stroke:#28a745,color:#155724
+    classDef error fill:#f8d7da,stroke:#dc3545,color:#721c24
+    classDef action fill:#cce5ff,stroke:#007bff,color:#004085
+    classDef warning fill:#fff3cd,stroke:#ffc107,color:#856404
+    class START,END,RESULT success
+    class ERR1,TIMEOUT error
+    class OPEN,SCAN,STOP,CLOSE action
+    class RETRY warning
+```
+
+## 接口列表
+
+### 1. 打开扫码设备（Open）
+
+通过本条指令上层应用可以开启扫码设备，用于扫码。
+
+#### 请求参数
+
+请求示例：
+
+```json
+{
+  "seq": "DEV_QrScan_Open_${uuid}",
+  "cmd": "Open",
+  "datetime": "20211201130101",
+  "posidx": "00",
+  "timeout": "30000",
+  "async": "0"
+}
+```
+
+参数说明：
+
+| 参数名称 | 格式 | 是否必填 | 参数说明 |
+|----------|------|----------|----------|
+| seq | string | 是 | DEV_QrScan_Open_${uuid}，uuid 作为指令的唯一号 |
+| cmd | string | 是 | 固定为"Open" |
+| datetime | string | 是 | 指令的下发时间，格式：YYYYMMddHHmmss |
+| posidx | string | 是 | 多个同款设备的工位号；"00"~"99" |
+| timeout | string | 是 | 超时时间(ms) |
+| async | string | 是 | 是否异步（默认0:同步）；0：同步；1：异步 |
+
+#### 返回参数
+
+返回示例：
+
+```json
+{
+  "seq": "DEV_QrScan_Open_${uuid}",
+  "cmd": "Open",
+  "datetime": "20211201130102",
+  "code": "0",
+  "msg": "success",
+  "posidx": "00"
+}
+```
+
+参数说明：
+
+| 参数名称 | 格式 | 参数说明 |
+|----------|------|----------|
+| seq | string | 同下发的 seq |
+| cmd | string | 同下发的 cmd |
+| datetime | string | 指令的下发时间，格式：YYYYMMddHHmmss |
+| code | string | 参照通用返回码 / 扫码枪返回码 |
+| msg | string | 参照通用返回码 / 扫码枪返回码 |
+| posidx | string | 同请求的 posidx |
+
+---
+
+### 2. 扫描条码（Scan）
+
+通过本条指令上层应用可以控制扫码枪开始扫码，返回扫码结果。
+
+#### 请求参数
+
+请求示例：
+
+```json
+{
+  "seq": "DEV_QrScan_Scan_${uuid}",
+  "cmd": "Scan",
+  "datetime": "20211201130101",
+  "timeout": "30000",
+  "posidx": "00",
+  "async": "0"
+}
+```
+
+参数说明：
+
+| 参数名称 | 格式 | 是否必填 | 参数说明 |
+|----------|------|----------|----------|
+| seq | string | 是 | DEV_QrScan_Scan_${uuid} |
+| cmd | string | 是 | 固定为"Scan" |
+| datetime | string | 是 | 指令的下发时间，格式：YYYYMMddHHmmss |
+| posidx | string | 是 | 多个同款设备的工位号；"00"~"99" |
+| timeout | string | 是 | 超时时间(ms) |
+| async | string | 是 | 是否异步（默认0:同步）；0：同步；1：异步 |
+
+#### 返回参数
+
+返回示例：
+
+```json
+{
+  "seq": "DEV_QrScan_Scan_${uuid}",
+  "cmd": "Scan",
+  "datetime": "20211201130102",
+  "code": "0",
+  "data": {
+    "zzzptm": "123456789"
+  },
+  "msg": "success",
+  "posidx": "00"
+}
+```
+
+参数说明：
+
+| 参数名称 | 格式 | 参数说明 |
+|----------|------|----------|
+| seq | string | 同下发的 seq |
+| cmd | string | 同下发的 cmd |
+| datetime | string | 指令的下发时间，格式：YYYYMMddHHmmss |
+| code | string | 参照通用返回码 / 扫码枪返回码 |
+| msg | string | 参照通用返回码 / 扫码枪返回码 |
+| posidx | string | 多个同款设备的工位号；"00"~"99" |
+| data | Object | 返回的数据对象 |
+| ↳ zzzptm | string | 条码或二维码数据 |
+
+---
+
+### 3. 停止扫码（Stop）
+
+通过本条指令上层应用可以控制扫码枪停止扫码。
+
+#### 请求参数
+
+请求示例：
+
+```json
+{
+  "seq": "DEV_QrScan_Stop_${uuid}",
+  "cmd": "Stop",
+  "datetime": "20211201130101",
+  "timeout": "30000",
+  "posidx": "00",
+  "async": "0"
+}
+```
+
+参数说明：
+
+| 参数名称 | 格式 | 是否必填 | 参数说明 |
+|----------|------|----------|----------|
+| seq | string | 是 | DEV_QrScan_Stop_${uuid} |
+| cmd | string | 是 | 固定为"Stop" |
+| datetime | string | 是 | 指令的下发时间，格式：YYYYMMddHHmmss |
+| posidx | string | 是 | 多个同款设备的工位号；"00"~"99" |
+| timeout | string | 是 | 超时时间(ms) |
+| async | string | 是 | 是否异步（默认0:同步），建议为1；0：同步；1：异步 |
+
+#### 返回参数
+
+返回示例：
+
+```json
+{
+  "seq": "DEV_QrScan_Stop_${uuid}",
+  "cmd": "Stop",
+  "datetime": "20211201130102",
+  "code": "0",
+  "msg": "success",
+  "posidx": "00"
+}
+```
+
+参数说明：
+
+| 参数名称 | 格式 | 参数说明 |
+|----------|------|----------|
+| seq | string | 同下发的 seq |
+| cmd | string | 同下发的 cmd |
+| datetime | string | 指令的下发时间，格式：YYYYMMddHHmmss |
+| code | string | 参照通用返回码 / 扫码枪返回码 |
+| msg | string | 参照通用返回码 / 扫码枪返回码 |
+| posidx | string | 多个同款设备的工位号；"00"~"99" |
+
+---
+
+### 4. 关闭扫码枪（Close）
+
+扫码枪工作完成，通过本条指令上层应用可以控制关闭扫码枪。
+
+#### 请求参数
+
+请求示例：
+
+```json
+{
+  "seq": "DEV_QrScan_Close_${uuid}",
+  "cmd": "Close",
+  "datetime": "20211201130101",
+  "posidx": "00",
+  "async": "0",
+  "timeout": "30000"
+}
+```
+
+参数说明：
+
+| 参数名称 | 格式 | 是否必填 | 参数说明 |
+|----------|------|----------|----------|
+| seq | string | 是 | DEV_QrScan_Close_${uuid} |
+| cmd | string | 是 | 固定为"Close" |
+| datetime | string | 是 | 指令的下发时间，格式：YYYYMMddHHmmss |
+| posidx | string | 是 | 多个同款设备的工位号；"00"~"99" |
+| timeout | string | 是 | 超时时间(ms) |
+
+#### 返回参数
+
+返回示例：
+
+```json
+{
+  "seq": "DEV_QrScan_Close_${uuid}",
+  "cmd": "Close",
+  "datetime": "20211201130102",
+  "data": {},
+  "code": "0",
+  "msg": "success",
+  "posidx": "00"
+}
+```
+
+参数说明：
+
+| 参数名称 | 格式 | 是否必填 | 参数说明 |
+|----------|------|----------|----------|
+| seq | string | 是 | 同下发的 seq |
+| cmd | string | 是 | 同下发的 cmd |
+| datetime | string | 是 | 指令的下发时间，格式：YYYYMMddHHmmss |
+| code | string | 是 | 参照通用返回码 / 扫码枪返回码 |
+| msg | string | 否 | 参照通用返回码 / 扫码枪返回码 |
+| posidx | string | 是 | 多个同款设备的工位号；"00"~"99" |
+
+## 错误码
+
+| 序号 | 错误码 | 含义 |
+|------|--------|------|
+| 1 | 99999901 | 主动取消 |
+| 2 | 13003001 | 设备未打开 |
+| 3 | 13003002 | 超时未扫到码 |
+| 4 | 13003003 | 指令接收或读取失败 |
+| 5 | 13003004 | 硬件型号或类型不符 |
+| 6 | 13003005 | 取消 |
+
+> 通用返回码（0~1037）请参阅 [通用返回码](../00-通用协议层/06-通用返回码.md)

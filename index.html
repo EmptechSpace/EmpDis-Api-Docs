@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EmpDIS API Docs</title>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <style>
+    .sidebar { padding-top: 0; }
+    .markdown-section h1 { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <div id="app">加载中...</div>
+  <script src="//cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: false, theme: 'default' });
+  </script>
+  <script>
+    window.$docsify = {
+      name: 'EmpDIS',
+      loadSidebar: '_sidebar.md',
+      subMaxLevel: 3,
+      auto2top: true,
+      search: {
+        placeholder: '搜索文档',
+        noData: '没有找到结果',
+        depth: 6
+      },
+      plugins: [
+        function mermaidPlugin(hook) {
+          hook.afterEach(function(html) {
+            return html.replace(
+              /<pre[^>]*><code[^>]*class="[^"]*lang-mermaid[^"]*"[^>]*>([\s\S]*?)<\/code><\/pre>/g,
+              function(match, code) {
+                var decoded = code
+                  .replace(/&amp;/g, '&')
+                  .replace(/&lt;/g, '<')
+                  .replace(/&gt;/g, '>')
+                  .replace(/&quot;/g, '"')
+                  .replace(/&#39;/g, "'");
+                return '<div class="mermaid">' + decoded + '</div>';
+              }
+            );
+          });
+          hook.doneEach(function() {
+            mermaid.run({ selector: '.mermaid' });
+          });
+        }
+      ]
+    };
+  </script>
+  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+</body>
+</html>
