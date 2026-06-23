@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EmpDIS API Docs</title>
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   <style>
     .sidebar { padding-top: 0; }
     .markdown-section h1 { margin-top: 0; }
@@ -12,7 +12,7 @@
 </head>
 <body>
   <div id="app">加载中...</div>
-  <script src="//cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script>
     mermaid.initialize({ startOnLoad: false, theme: 'default' });
   </script>
@@ -30,7 +30,9 @@
       plugins: [
         function mermaidPlugin(hook) {
           hook.doneEach(function() {
-            document.querySelectorAll('pre[data-lang="mermaid"]').forEach(function(pre) {
+            var targets = document.querySelectorAll('pre[data-lang="mermaid"]');
+            if (targets.length === 0) return;
+            targets.forEach(function(pre) {
               var code = pre.querySelector('code');
               if (!code) return;
               var div = document.createElement('div');
@@ -38,13 +40,14 @@
               div.textContent = code.textContent;
               pre.parentElement.replaceChild(div, pre);
             });
-            mermaid.run({ selector: '.mermaid' });
+            var nodes = document.querySelectorAll('.mermaid');
+            mermaid.run({ nodes: nodes });
           });
         }
       ]
     };
   </script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
 </body>
 </html>
