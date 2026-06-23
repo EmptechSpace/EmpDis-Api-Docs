@@ -29,21 +29,15 @@
       },
       plugins: [
         function mermaidPlugin(hook) {
-          hook.afterEach(function(html) {
-            return html.replace(
-              /<pre[^>]*><code[^>]*class="[^"]*lang-mermaid[^"]*"[^>]*>([\s\S]*?)<\/code><\/pre>/g,
-              function(match, code) {
-                var decoded = code
-                  .replace(/&amp;/g, '&')
-                  .replace(/&lt;/g, '<')
-                  .replace(/&gt;/g, '>')
-                  .replace(/&quot;/g, '"')
-                  .replace(/&#39;/g, "'");
-                return '<div class="mermaid">' + decoded + '</div>';
-              }
-            );
-          });
           hook.doneEach(function() {
+            document.querySelectorAll('pre[data-lang="mermaid"]').forEach(function(pre) {
+              var code = pre.querySelector('code');
+              if (!code) return;
+              var div = document.createElement('div');
+              div.className = 'mermaid';
+              div.textContent = code.textContent;
+              pre.parentElement.replaceChild(div, pre);
+            });
             mermaid.run({ selector: '.mermaid' });
           });
         }
