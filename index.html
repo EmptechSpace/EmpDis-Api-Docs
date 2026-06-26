@@ -8,10 +8,26 @@
   <style>
     .sidebar { padding-top: 0; }
     .markdown-section h1 { margin-top: 0; }
+    .lang-switch {
+      position: absolute;
+      top: 0;
+      right: 10px;
+      z-index: 100;
+      padding: 15px 0;
+      font-size: 14px;
+    }
+    .lang-switch a {
+      color: var(--theme-color, #42b983);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .lang-switch a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-  <div id="app">加载中...</div>
+  <div id="app">Loading...</div>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script>
     mermaid.initialize({ startOnLoad: false, theme: 'default' });
@@ -22,10 +38,25 @@
       loadSidebar: '_sidebar.md',
       subMaxLevel: 3,
       auto2top: true,
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md',
+        '/zh/(.*)': '/zh/$1',
+        '/en/(.*)': '/en/$1'
+      },
       search: {
-        placeholder: '搜索文档',
-        noData: '没有找到结果',
-        depth: 6
+        placeholder: {
+          '/zh/': '搜索文档',
+          '/en/': 'Search docs'
+        },
+        noData: {
+          '/zh/': '没有找到结果',
+          '/en/': 'No results'
+        },
+        depth: 6,
+        paths: [
+          '/zh/',
+          '/en/'
+        ]
       },
       plugins: [
         function mermaidPlugin(hook) {
@@ -43,11 +74,39 @@
             var nodes = document.querySelectorAll('.mermaid');
             mermaid.run({ nodes: nodes });
           });
+        },
+        function langSwitchPlugin(hook) {
+          hook.doneEach(function() {
+            var existing = document.querySelector('.lang-switch');
+            if (existing) return;
+            var sidebar = document.querySelector('.sidebar');
+            if (!sidebar) return;
+            var isZh = location.hash.indexOf('/zh/') !== -1;
+            var isEn = location.hash.indexOf('/en/') !== -1;
+            var link = document.createElement('a');
+            if (isZh) {
+              link.href = '#/en/';
+              link.textContent = 'English';
+            } else {
+              link.href = '#/zh/';
+              link.textContent = '中文';
+            }
+            var container = document.createElement('div');
+            container.className = 'lang-switch';
+            container.appendChild(link);
+            sidebar.appendChild(container);
+          });
         }
       ]
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+  <script>
+    // Default redirect to zh
+    if (!location.hash || location.hash === '#' || location.hash === '#/') {
+      location.hash = '#/zh/';
+    }
+  </script>
 </body>
 </html>

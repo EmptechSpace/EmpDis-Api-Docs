@@ -1,0 +1,52 @@
+# Common Return Codes
+
+## Document Version
+
+| Version | Date | Changes |
+|---------|------|---------|
+| V1.0 | 2026-06-16 | Initial version, split from original document |
+
+## Error Code Description
+
+All API return codes are consistent with this chapter. Please refer to the return code descriptions here when using them.
+
+| Error Code | Meaning | Remarks |
+|------------|---------|---------|
+| "0" | CN：成功完成；EN：success | |
+| "1001" | CN：报文的 JSON 格式错误；EN：invalid json in request | |
+| "1002" | CN：系统不支持的请求报文类型；EN：unsupported request in system | |
+| "1003" | CN：请求报文的 seq 字段内容异常；EN：invalid the 'seq' field in request | |
+| "1004" | CN：请求报文解析失败；EN：failed to parse the request message | |
+| "1005" | CN：正在执行中，等待设备应答；EN：waiting for device reply | |
+| "1006" | CN：重复获取到同一个请求的结果；EN：app had duplicatedly fetched the same result | Ignore by default |
+| "1007" | CN：设备应答超时；EN：timeout for device reply | |
+| "1008" | CN：上层未在允许的时间范围内提取结果，结果已经作废；EN：too late, user fetch the ready reply till the expiration | |
+| "1009" | CN：请求报文未在允许的时间内，发送给设备；EN：timeout while sending request to device | |
+| "1010" | CN：尚未发请求到设备；EN：no request was sent to device | |
+| "1011" | CN：无效的 HTTP 数据体；EN：invalid http body | |
+| "1012" | CN：无效参数缓冲区；EN：invalid param buffer | |
+| "1013" | CN：指定进程已启动，请勿重复启动；EN：the device service had already started | |
+| "1014" | CN：未查询到指定报文详情；EN：no specific details were found | |
+| "1015" | CN：未查询到所需记录列表；EN：no record list founded | |
+| "1016" | CN：服务调度出现异常；EN：abnormal schedule action | |
+| "1017" | CN：脚本环境初始化错误；EN：Script environment initiation failed | |
+| "1018" | CN：脚本加载或者执行出错；EN：Scripts loading failed | |
+| "1019" | CN：定位 LUA 的函数入口失败；EN：Scripts locating LUA function failed [send_msg] | |
+| "1020" | CN：脚本执行失败；EN：Script executing wrongly | |
+| "1021" | CN：脚本返回值解析失败；EN：LUA result value is NULL | |
+| "1022" | CN：脚本返回的结果是空白；EN：LUA returned result is blank space | |
+| "1023" | CN：内部通讯超时-1；EN：inner communication timeout-1 | |
+| "1024" | CN：外设库 DLL 加载失败；EN：Device library loading error | |
+| "1025" | CN：取消指令未携带待取消的 seq 值；EN：No seq to be canceled in request | |
+| "1026" | CN：网络通讯未应答；EN：No response from peer | |
+| "1027" | CN：网络设置异常；EN：Network setting error | |
+| "1028" | CN：客户端未连接，无法转发；EN：no XXX client connection to forward | |
+| "1029" | CN：请求接口不存在；EN：invalid request access | |
+| "1030" | CN：任务被强制取消；EN：force to stop task | |
+| "1031" | CN：外设库的 Trace 消息，触发音频或者动作；EN：Trace Message | |
+| "1032" | CN：数据库操作失败；EN：Failure from database operation | |
+| "1033" | CN：数据校验失败；EN：Data verification failure | |
+| "1034" | CN：文件校验失败；EN：File verification failure | |
+| "1035" | CN：打开指定文件失败；EN：Failed to open required file | |
+| "1036" | CN：设备不可重复注册；EN：Forbid register device duplicated | |
+| "1037" | CN：设备未注册；EN：Un-registed terminal, forbid access to DIS | |

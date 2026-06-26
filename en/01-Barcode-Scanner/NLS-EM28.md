@@ -1,0 +1,295 @@
+# Barcode Scanner - NLS-EM28
+
+## Document Version
+
+| Version | Date | Changes |
+|---------|------|---------|
+| V1.0 | 2026-06-16 | Initial version, split from original document |
+| V1.1 | 2026-06-17 | Optimized call flow diagram, added exception handling paths |
+
+## Device Information
+
+| Item | Details |
+|------|---------|
+| Device Type | Barcode Scanner |
+| Brand | NLS (Newland) |
+| Model | NLS-EM28 |
+| DIS Interface Prefix | DEV_QrScan |
+
+## Call Flow
+
+```mermaid
+flowchart TD
+    START([Start]) --> OPEN[Open - Open barcode scanner device]
+    OPEN -->|code=0 Initialization successful| SCAN[Scan - Start scanning]
+    OPEN -->|code≠0 Initialization failed| ERR1[Check device connection / Retry]
+    SCAN -->|code=0 Scan successful| RESULT[Get barcodeData - Scan result]
+    SCAN -->|13003002 Timeout| TIMEOUT[Timeout - No barcode detected]
+    SCAN -->|99999901 Active cancel| STOP[Stop - Stop scanning]
+    RESULT --> STOP
+    TIMEOUT --> RETRY{Retry?}
+    RETRY -->|Yes| SCAN
+    RETRY -->|No| STOP
+    STOP --> CLOSE[Close - Close device]
+    ERR1 --> CLOSE
+    CLOSE --> END([End])
+
+    classDef success fill:#d4edda,stroke:#28a745,color:#155724
+    classDef error fill:#f8d7da,stroke:#dc3545,color:#721c24
+    classDef action fill:#cce5ff,stroke:#007bff,color:#004085
+    classDef warning fill:#fff3cd,stroke:#ffc107,color:#856404
+    class START,END,RESULT success
+    class ERR1,TIMEOUT error
+    class OPEN,SCAN,STOP,CLOSE action
+    class RETRY warning
+```
+
+## Interface List
+
+### 1. Open Barcode Scanner Device (Open)
+
+Through this command, the upper-layer application can open the barcode scanner device for scanning.
+
+#### Request Parameters
+
+Request example:
+
+```json
+{
+  "seq": "DEV_QrScan_Open_${uuid}",
+  "cmd": "Open",
+  "datetime": "20211201130101",
+  "posidx": "00",
+  "timeout": "30000",
+  "async": "0"
+}
+```
+
+Parameter description:
+
+| Parameter Name | Format | Required | Description |
+|----------------|--------|----------|-------------|
+| seq | string | Yes | DEV_QrScan_Open_${uuid}, uuid serves as the unique identifier of the command |
+| cmd | string | Yes | Fixed as "Open" |
+| datetime | string | Yes | Command dispatch time, format: YYYYMMddHHmmss |
+| posidx | string | Yes | Station number for multiple devices of the same type; "00"~"99" |
+| timeout | string | Yes | Timeout duration (ms) |
+| async | string | Yes | Asynchronous or not (default 0: synchronous); 0: synchronous; 1: asynchronous |
+
+#### Response Parameters
+
+Response example:
+
+```json
+{
+  "seq": "DEV_QrScan_Open_${uuid}",
+  "cmd": "Open",
+  "datetime": "20211201130102",
+  "code": "0",
+  "msg": "success",
+  "posidx": "00"
+}
+```
+
+Parameter description:
+
+| Parameter Name | Format | Description |
+|----------------|--------|-------------|
+| seq | string | Same as the dispatched seq |
+| cmd | string | Same as the dispatched cmd |
+| datetime | string | Command dispatch time, format: YYYYMMddHHmmss |
+| code | string | Refer to general return codes / barcode scanner return codes |
+| msg | string | Refer to general return codes / barcode scanner return codes |
+| posidx | string | Same as the requested posidx |
+
+---
+
+### 2. Scan Barcode (Scan)
+
+Through this command, the upper-layer application can control the barcode scanner to start scanning and return the scan result.
+
+#### Request Parameters
+
+Request example:
+
+```json
+{
+  "seq": "DEV_QrScan_Scan_${uuid}",
+  "cmd": "Scan",
+  "datetime": "20211201130101",
+  "timeout": "30000",
+  "posidx": "00",
+  "async": "0"
+}
+```
+
+Parameter description:
+
+| Parameter Name | Format | Required | Description |
+|----------------|--------|----------|-------------|
+| seq | string | Yes | DEV_QrScan_Scan_${uuid} |
+| cmd | string | Yes | Fixed as "Scan" |
+| datetime | string | Yes | Command dispatch time, format: YYYYMMddHHmmss |
+| posidx | string | Yes | Station number for multiple devices of the same type; "00"~"99" |
+| timeout | string | Yes | Timeout duration (ms) |
+| async | string | Yes | Asynchronous or not (default 0: synchronous); 0: synchronous; 1: asynchronous |
+
+#### Response Parameters
+
+Response example:
+
+```json
+{
+  "seq": "DEV_QrScan_Scan_${uuid}",
+  "cmd": "Scan",
+  "datetime": "20211201130102",
+  "code": "0",
+  "data": {
+    "zzzptm": "123456789"
+  },
+  "msg": "success",
+  "posidx": "00"
+}
+```
+
+Parameter description:
+
+| Parameter Name | Format | Description |
+|----------------|--------|-------------|
+| seq | string | Same as the dispatched seq |
+| cmd | string | Same as the dispatched cmd |
+| datetime | string | Command dispatch time, format: YYYYMMddHHmmss |
+| code | string | Refer to general return codes / barcode scanner return codes |
+| msg | string | Refer to general return codes / barcode scanner return codes |
+| posidx | string | Station number for multiple devices of the same type; "00"~"99" |
+| data | Object | Returned data object |
+| ↳ zzzptm | string | Barcode or QR code data |
+
+---
+
+### 3. Stop Scanning (Stop)
+
+Through this command, the upper-layer application can control the barcode scanner to stop scanning.
+
+#### Request Parameters
+
+Request example:
+
+```json
+{
+  "seq": "DEV_QrScan_Stop_${uuid}",
+  "cmd": "Stop",
+  "datetime": "20211201130101",
+  "timeout": "30000",
+  "posidx": "00",
+  "async": "0"
+}
+```
+
+Parameter description:
+
+| Parameter Name | Format | Required | Description |
+|----------------|--------|----------|-------------|
+| seq | string | Yes | DEV_QrScan_Stop_${uuid} |
+| cmd | string | Yes | Fixed as "Stop" |
+| datetime | string | Yes | Command dispatch time, format: YYYYMMddHHmmss |
+| posidx | string | Yes | Station number for multiple devices of the same type; "00"~"99" |
+| timeout | string | Yes | Timeout duration (ms) |
+| async | string | Yes | Asynchronous or not (default 0: synchronous), recommended as 1; 0: synchronous; 1: asynchronous |
+
+#### Response Parameters
+
+Response example:
+
+```json
+{
+  "seq": "DEV_QrScan_Stop_${uuid}",
+  "cmd": "Stop",
+  "datetime": "20211201130102",
+  "code": "0",
+  "msg": "success",
+  "posidx": "00"
+}
+```
+
+Parameter description:
+
+| Parameter Name | Format | Description |
+|----------------|--------|-------------|
+| seq | string | Same as the dispatched seq |
+| cmd | string | Same as the dispatched cmd |
+| datetime | string | Command dispatch time, format: YYYYMMddHHmmss |
+| code | string | Refer to general return codes / barcode scanner return codes |
+| msg | string | Refer to general return codes / barcode scanner return codes |
+| posidx | string | Station number for multiple devices of the same type; "00"~"99" |
+
+---
+
+### 4. Close Barcode Scanner (Close)
+
+When the barcode scanner has finished working, the upper-layer application can close it through this command.
+
+#### Request Parameters
+
+Request example:
+
+```json
+{
+  "seq": "DEV_QrScan_Close_${uuid}",
+  "cmd": "Close",
+  "datetime": "20211201130101",
+  "posidx": "00",
+  "async": "0",
+  "timeout": "30000"
+}
+```
+
+Parameter description:
+
+| Parameter Name | Format | Required | Description |
+|----------------|--------|----------|-------------|
+| seq | string | Yes | DEV_QrScan_Close_${uuid} |
+| cmd | string | Yes | Fixed as "Close" |
+| datetime | string | Yes | Command dispatch time, format: YYYYMMddHHmmss |
+| posidx | string | Yes | Station number for multiple devices of the same type; "00"~"99" |
+| timeout | string | Yes | Timeout duration (ms) |
+
+#### Response Parameters
+
+Response example:
+
+```json
+{
+  "seq": "DEV_QrScan_Close_${uuid}",
+  "cmd": "Close",
+  "datetime": "20211201130102",
+  "data": {},
+  "code": "0",
+  "msg": "success",
+  "posidx": "00"
+}
+```
+
+Parameter description:
+
+| Parameter Name | Format | Required | Description |
+|----------------|--------|----------|-------------|
+| seq | string | Yes | Same as the dispatched seq |
+| cmd | string | Yes | Same as the dispatched cmd |
+| datetime | string | Yes | Command dispatch time, format: YYYYMMddHHmmss |
+| code | string | Yes | Refer to general return codes / barcode scanner return codes |
+| msg | string | No | Refer to general return codes / barcode scanner return codes |
+| posidx | string | Yes | Station number for multiple devices of the same type; "00"~"99" |
+
+## Error Codes
+
+| No. | Error Code | Meaning |
+|-----|------------|---------|
+| 1 | 99999901 | Active cancel |
+| 2 | 13003001 | Device not opened |
+| 3 | 13003002 | Timeout - No barcode detected |
+| 4 | 13003003 | Command reception or read failure |
+| 5 | 13003004 | Hardware model or type mismatch |
+| 6 | 13003005 | Cancelled |
+
+> For general return codes (0~1037), please refer to [General Return Codes](../00-通用协议层/06-通用返回码.md)
