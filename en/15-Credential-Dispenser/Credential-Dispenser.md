@@ -1,4 +1,4 @@
-# Credential Dispenser
+﻿# Credential Dispenser
 
 ## Document Version
 
@@ -339,4 +339,4 @@ Parameter Description:
 | 7 | 17133007 | Active cancellation |
 | 8 | 17133008 | Timeout |
 
-> For general return codes (0~1037), please refer to [General Return Codes](../00-通用协议层/06-通用返回码.md)
+> For general return codes (0~1037), please refer to [General Return Codes](../00-Common-Protocol/06-Common-Return-Codes.md)

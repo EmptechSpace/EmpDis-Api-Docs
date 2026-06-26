@@ -1,4 +1,4 @@
-# Fingerprint Scanner - IDEMIA CB4
+﻿# Fingerprint Scanner - IDEMIA CB4
 
 ## Document Version
 
@@ -57,7 +57,7 @@ flowchart TD
     class TRACE1,TRACE2 trace
 ```
 
-> Open returns video_url, which can be used to obtain the fingerprint scanner preview video stream. For the process, please refer to [General Protocol Layer - Video Stream Acquisition](../00-通用协议层/04-视频流获取.md)
+> Open returns video_url, which can be used to obtain the fingerprint scanner preview video stream. For the process, please refer to [General Protocol Layer - Video Stream Acquisition](../00-Common-Protocol/04-Video-Stream.md)
 
 ## Differences from File Path Mode
 
@@ -507,4 +507,4 @@ Parameter Description:
 | 5 | 15303005 | SDK already initialized, no need to initialize again |
 | 6 | 15303006 | SDK initialization error occurred |
 
-> For general return codes (0~1037), please refer to [General Return Codes](../00-通用协议层/06-通用返回码.md)
+> For general return codes (0~1037), please refer to [General Return Codes](../00-Common-Protocol/06-Common-Return-Codes.md)

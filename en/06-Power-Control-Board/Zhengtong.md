@@ -1,4 +1,4 @@
-# Power Control Board - Zhengtong
+﻿# Power Control Board - Zhengtong
 
 ## Document Version
 
@@ -166,4 +166,4 @@ Parameter description:
 | 4 | 17690004 | Failed to get library version |
 | 5 | 17696001 | Command not supported |
 
-> For general return codes (0~1037), please refer to [General Return Codes](../00-通用协议层/06-通用返回码.md)
+> For general return codes (0~1037), please refer to [General Return Codes](../00-Common-Protocol/06-Common-Return-Codes.md)

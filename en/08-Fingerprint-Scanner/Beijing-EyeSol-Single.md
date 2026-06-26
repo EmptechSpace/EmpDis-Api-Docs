@@ -1,4 +1,4 @@
-# Fingerprint Scanner - Beijing EyeSol Single-Finger Scanner
+﻿# Fingerprint Scanner - Beijing EyeSol Single-Finger Scanner
 
 ## Document Version
 
@@ -47,7 +47,7 @@ flowchart TD
     class RETRY1,RETRY2 warning
 ```
 
-> Open returns video_url, which can be used to obtain the fingerprint scanner preview video stream. For the process, please refer to [General Protocol Layer - Video Stream Acquisition](../00-通用协议层/04-视频流获取.md)
+> Open returns video_url, which can be used to obtain the fingerprint scanner preview video stream. For the process, please refer to [General Protocol Layer - Video Stream Acquisition](../00-Common-Protocol/04-Video-Stream.md)
 
 ## Finger Position Code Description
 
@@ -382,4 +382,4 @@ Parameter Description:
 | 18 | 15700116 | Invalid device handle |
 | 19 | 15700117 | Initialization failed |
 
-> For general return codes (0~1037), please refer to [General Return Codes](../00-通用协议层/06-通用返回码.md)
+> For general return codes (0~1037), please refer to [General Return Codes](../00-Common-Protocol/06-Common-Return-Codes.md)

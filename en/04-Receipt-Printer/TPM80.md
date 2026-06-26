@@ -1,4 +1,4 @@
-# Receipt Printer - TPM80
+﻿# Receipt Printer - TPM80
 
 ## Document Version
 
@@ -206,4 +206,4 @@ Parameter description:
 | 17 | 14299607 | Printer overheated |
 | 18 | 14299608 | Cutter error |
 
-> For general return codes (0~1037), please refer to [General Return Codes](../00-通用协议层/06-通用返回码.md)
+> For general return codes (0~1037), please refer to [General Return Codes](../00-Common-Protocol/06-Common-Return-Codes.md)

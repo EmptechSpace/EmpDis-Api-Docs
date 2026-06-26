@@ -1,4 +1,4 @@
-# Depth Camera - Intel D415
+﻿# Depth Camera - Intel D415
 
 ## Document Version
 
@@ -315,4 +315,4 @@ Parameter Description:
 | 14 | 19300110 | Device does not exist |
 | 15 | 19300113 | Device communication failed |
 
-> For general return codes (0~1037), please refer to [General Return Codes](../00-通用协议层/06-通用返回码.md)
+> For general return codes (0~1037), please refer to [General Return Codes](../00-Common-Protocol/06-Common-Return-Codes.md)

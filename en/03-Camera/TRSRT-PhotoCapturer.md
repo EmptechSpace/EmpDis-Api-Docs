@@ -1,4 +1,4 @@
-# Camera - TRSRT PhotoCapturer
+﻿# Camera - TRSRT PhotoCapturer
 
 ## Document Version
 
@@ -550,4 +550,4 @@ Parameter description:
 | 38 | 15103004 | Face comparison failed |
 | 39 | 15103005 | Feature value extraction failed |
 
-> For general return codes (0~1037), please refer to [General Return Codes](../00-通用协议层/06-通用返回码.md)
+> For general return codes (0~1037), please refer to [General Return Codes](../00-Common-Protocol/06-Common-Return-Codes.md)

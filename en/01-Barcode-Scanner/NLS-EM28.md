@@ -1,4 +1,4 @@
-# Barcode Scanner - NLS-EM28
+﻿# Barcode Scanner - NLS-EM28
 
 ## Document Version
 
@@ -292,4 +292,4 @@ Parameter description:
 | 5 | 13003004 | Hardware model or type mismatch |
 | 6 | 13003005 | Cancelled |
 
-> For general return codes (0~1037), please refer to [General Return Codes](../00-通用协议层/06-通用返回码.md)
+> For general return codes (0~1037), please refer to [General Return Codes](../00-Common-Protocol/06-Common-Return-Codes.md)

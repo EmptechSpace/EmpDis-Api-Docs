@@ -1,4 +1,4 @@
-# A4 Printer - HP LaserJet Pro 4004
+﻿# A4 Printer - HP LaserJet Pro 4004
 
 ## Document Version
 
@@ -217,4 +217,4 @@ Parameter Description:
 | 9 | 14739007 | Failed to print image |
 | 10 | 14739008 | Printer out of paper |
 
-> For general return codes (0~1037), please refer to [General Return Codes](../00-通用协议层/06-通用返回码.md)
+> For general return codes (0~1037), please refer to [General Return Codes](../00-Common-Protocol/06-Common-Return-Codes.md)

@@ -1,4 +1,4 @@
-# Gate Control Board
+﻿# Gate Control Board
 
 ## Document Version
 
@@ -128,4 +128,4 @@ Parameter Description:
 | 4 | 17603308 | SDK call failed |
 | 5 | 17603402 | Execution timeout |
 
-> For general return codes (0~1037), please refer to [General Return Codes](../00-通用协议层/06-通用返回码.md)
+> For general return codes (0~1037), please refer to [General Return Codes](../00-Common-Protocol/06-Common-Return-Codes.md)

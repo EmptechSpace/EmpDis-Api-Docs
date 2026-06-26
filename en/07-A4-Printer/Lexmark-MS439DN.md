@@ -1,4 +1,4 @@
-# A4 Printer - Lexmark MS439DN
+﻿# A4 Printer - Lexmark MS439DN
 
 ## Document Version
 
@@ -212,4 +212,4 @@ Parameter Description:
 | 8 | 14739006 | Failed to load image |
 | 9 | 14739007 | Failed to print image |
 
-> For general return codes (0~1037), please refer to [General Return Codes](../00-通用协议层/06-通用返回码.md)
+> For general return codes (0~1037), please refer to [General Return Codes](../00-Common-Protocol/06-Common-Return-Codes.md)

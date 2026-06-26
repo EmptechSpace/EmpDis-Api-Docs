@@ -1,4 +1,4 @@
-# Passport Reader - THALES
+﻿# Passport Reader - THALES
 
 ## Document Version
 
@@ -291,4 +291,4 @@ Parameter description:
 | 13 | 12703030 | Operation timed out |
 | 14 | 12703032 | Operation actively cancelled |
 
-> For general return codes (0~1037), please refer to [General Return Codes](../00-通用协议层/06-通用返回码.md)
+> For general return codes (0~1037), please refer to [General Return Codes](../00-Common-Protocol/06-Common-Return-Codes.md)

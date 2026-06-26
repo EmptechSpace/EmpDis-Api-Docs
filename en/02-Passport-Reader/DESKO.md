@@ -1,4 +1,4 @@
-# Passport Reader - DESKO
+﻿# Passport Reader - DESKO
 
 ## Document Version
 
@@ -300,4 +300,4 @@ Parameter description:
 | 4 | 12603004 | SDK not initialized |
 | 5 | 12603005 | SDK already initialized, no need to initialize again |
 
-> For general return codes (0~1037), please refer to [General Return Codes](../00-通用协议层/06-通用返回码.md)
+> For general return codes (0~1037), please refer to [General Return Codes](../00-Common-Protocol/06-Common-Return-Codes.md)

@@ -1,4 +1,4 @@
-# Indicator Light & Fill Light - Zhengtong
+﻿# Indicator Light & Fill Light - Zhengtong
 
 ## Document Version
 
@@ -173,4 +173,4 @@ Parameter description:
 | 8 | 17590008 | Dynamic library not initialized |
 | 9 | 17590009 | Failed to get dynamic library version |
 
-> For general return codes (0~1037), please refer to [General Return Codes](../00-通用协议层/06-通用返回码.md)
+> For general return codes (0~1037), please refer to [General Return Codes](../00-Common-Protocol/06-Common-Return-Codes.md)

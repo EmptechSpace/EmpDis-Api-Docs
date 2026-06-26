@@ -1,4 +1,4 @@
-# Camera - Aoni USB Camera
+﻿# Camera - Aoni USB Camera
 
 ## Document Version
 
@@ -54,7 +54,7 @@ flowchart TD
     class ACTION,RETRY1,RETRY2 warning
 ```
 
-> For TakeVideo video stream acquisition, please refer to [General Protocol Layer - Video Stream Acquisition](../00-通用协议层/04-视频流获取.md)
+> For TakeVideo video stream acquisition, please refer to [General Protocol Layer - Video Stream Acquisition](../00-Common-Protocol/04-Video-Stream.md)
 
 ## posidx Number Description
 
@@ -403,4 +403,4 @@ Parameter description:
 | 38 | 15103004 | Face comparison failed |
 | 39 | 15103005 | Feature value extraction failed |
 
-> For general return codes (0~1037), please refer to [General Return Codes](../00-通用协议层/06-通用返回码.md)
+> For general return codes (0~1037), please refer to [General Return Codes](../00-Common-Protocol/06-Common-Return-Codes.md)
